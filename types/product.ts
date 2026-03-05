@@ -3,6 +3,7 @@ export type Product = {
   title: string;
   price: number;
   image: string;
+  image_url?: string;
   shopeeUrl: string;
 
   description?: string;

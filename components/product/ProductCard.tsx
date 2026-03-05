@@ -4,11 +4,11 @@ import { Product } from "@/types/product";
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import {
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
 import FavoriteButton from "../ui/FavoriteButton";
 
@@ -20,6 +20,12 @@ export default function ProductCard({ product }: { product: Product }) {
       console.error("Error opening URL:", error);
     }
   };
+
+  // รูปจาก Supabase Storage
+  const imageSource =
+    product.image_url ||
+    product.image ||
+    "https://via.placeholder.com/200";
 
   return (
     <View
@@ -35,6 +41,7 @@ export default function ProductCard({ product }: { product: Product }) {
         shadowRadius: 4,
       }}
     >
+      {/* Favorite Button */}
       <View
         style={{
           position: "absolute",
@@ -46,20 +53,25 @@ export default function ProductCard({ product }: { product: Product }) {
         <FavoriteButton product={product} />
       </View>
 
+      {/* Product Image (Supabase Storage) */}
       <Image
-        source={{ uri: product.image }}
+        source={{ uri: imageSource }}
         style={{
-          height: 160,
+          width: "100%",
+          height: 180,
           borderRadius: 12,
           marginBottom: SPACING.md,
           backgroundColor: COLORS.background,
         }}
+        resizeMode="cover"
       />
 
+      {/* Title */}
       <Text style={{ fontWeight: "bold", fontSize: 16, color: COLORS.text }}>
         {product.title}
       </Text>
 
+      {/* Price */}
       <Text
         style={{
           color: COLORS.accent,
@@ -68,12 +80,12 @@ export default function ProductCard({ product }: { product: Product }) {
           marginVertical: SPACING.sm,
         }}
       >
-        ฿{product.price.toLocaleString()}
+        ฿{Number(product.price).toLocaleString()}
       </Text>
 
       {/* Action Buttons */}
       <View style={{ marginTop: SPACING.md, gap: SPACING.sm }}>
-        {/* Shopee Button */}
+        {/* Shopee */}
         <TouchableOpacity
           onPress={() => openURL(product.shopeeUrl)}
           style={styles.buttonPrimary}
@@ -82,9 +94,8 @@ export default function ProductCard({ product }: { product: Product }) {
           <Text style={styles.buttonTextPrimary}>เข้าซื้อใน Shopee</Text>
         </TouchableOpacity>
 
-        {/* Video and Playlist Buttons Row */}
+        {/* Video / Playlist */}
         <View style={{ flexDirection: "row", gap: SPACING.sm }}>
-          {/* Video Button */}
           {product.videoUrl && (
             <TouchableOpacity
               onPress={() => openURL(product.videoUrl!)}
@@ -95,7 +106,6 @@ export default function ProductCard({ product }: { product: Product }) {
             </TouchableOpacity>
           )}
 
-          {/* Playlist Button */}
           {product.playlistUrl && (
             <TouchableOpacity
               onPress={() => openURL(product.playlistUrl!)}

@@ -38,6 +38,7 @@ export async function getShopeeProducts(): Promise<Product[]> {
       price: 9999,
       image:
         "https://i.ytimg.com/vi/-_RB3r3uGiY/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDkEbDlVB8EfjmX6SfiE32utreorQ",
+      image_url: "https://collectjurassic.com/wp-content/uploads/2022/06/DominionToysFtr.jpg",
       shopeeUrl: "https://th.shp.ee/5rJdxsG",
       playlistUrl:
         "https://youtube.com/playlist?list=PLcEypFWfI8oXnbSA09ef6v-ZB0CQxupK8&si=2mn7AEsUrq_v4pkC",

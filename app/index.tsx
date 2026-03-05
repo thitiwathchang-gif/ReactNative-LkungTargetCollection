@@ -5,18 +5,35 @@ import { SPACING } from "@/constants/spacing";
 import { useFetch } from "@/hooks/useFetch";
 import { getShopeeProducts } from "@/services/shopee";
 import { supabaseProductsService } from "@/services/supabaseService";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    RefreshControl,
-    ScrollView,
-    Text,
-    View,
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  Text,
+  View,
 } from "react-native";
+
+
+import { getProducts } from "@/services/productService";
+import { supabase } from "@/utils/supabase";
+useEffect(() => {
+  supabase.from("favorites").select("*")
+    .then(console.log);
+}, []);
 
 export default function Home() {
   const [refreshing, setRefreshing] = useState(false);
 
+const [Products, setProducts] = useState<any[]>([]);
+
+useEffect(() => {
+  const load = async () => {
+    const data = await getProducts();
+    setProducts(data);
+  };
+  load();
+}, []);
   const fetchProducts = useCallback(async () => {
     // try Supabase first
     try {
@@ -29,6 +46,19 @@ export default function Home() {
     // fallback to bundled/mock Shopee products or external endpoint
     return getShopeeProducts();
   }, []);
+
+  useEffect(() => {
+  const test = async () => {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*");
+
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
+  };
+
+  test();
+}, []);
 
   const {
     data: productsData,
@@ -47,6 +77,7 @@ export default function Home() {
     await refetch();
     setRefreshing(false);
   };
+  
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.background }}>
@@ -78,6 +109,7 @@ export default function Home() {
             }}
           >
             <ActivityIndicator size="large" color={COLORS.primary} />
+          
             <Text
               style={{ marginTop: SPACING.md, color: COLORS.textSecondary }}
             >

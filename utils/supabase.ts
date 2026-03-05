@@ -1,21 +1,15 @@
-// Safe placeholder - Supabase disabled (no dependency required)
-export const supabase = {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createClient } from '@supabase/supabase-js';
+import 'react-native-url-polyfill/auto';
+const supabaseUrl = "https://cjssonslxveyotrsdeln.supabase.co";
+
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqc3NvbnNseHZleW90cnNkZWxuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNjU5ODksImV4cCI6MjA4Nzg0MTk4OX0.vJDSWe0PmpQIb2kpMA8ojXpCq1FJt-cILZNQQmkM2ds";
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    getSession: async () => ({ data: { session: null } }),
-    signInWithPassword: async () => ({ data: null, error: null }),
-    signUp: async () => ({ data: null, error: null }),
-    signOut: async () => {},
+    storage: AsyncStorage,
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false,
   },
-  from: () => ({
-    insert: async () => ({ data: null, error: null }),
-    select: () => ({
-      eq: async () => ({ data: [] }),
-    }),
-  }),
-  storage: {
-    from: () => ({
-      upload: async () => ({ data: null, error: null }),
-      getPublicUrl: () => ({ data: { publicUrl: "" } }),
-    }),
-  },
-};
+});
